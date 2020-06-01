@@ -27,9 +27,8 @@ def eval_metrics(actual, pred):
     return rmse, mae, r2
 
 
-
 if __name__ == "__main__":
-    #mlflow.set_tracking_uri("https://dev.digitalcitadel.tech")
+    mlflow.set_tracking_uri("https://dev.digitalcitadel.tech")
     warnings.filterwarnings("ignore")
     np.random.seed(40)
 
