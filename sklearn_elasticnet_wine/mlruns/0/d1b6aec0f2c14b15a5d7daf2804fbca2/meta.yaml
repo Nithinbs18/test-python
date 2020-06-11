@@ -1,0 +1,15 @@
+artifact_uri: ./mlruns/0/d1b6aec0f2c14b15a5d7daf2804fbca2/artifacts
+end_time: 1589892131470
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+name: ''
+run_id: d1b6aec0f2c14b15a5d7daf2804fbca2
+run_uuid: d1b6aec0f2c14b15a5d7daf2804fbca2
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1589892131361
+status: 3
+tags: []
+user_id: Nithin
