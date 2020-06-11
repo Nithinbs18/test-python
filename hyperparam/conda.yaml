@@ -14,4 +14,5 @@ dependencies:
     - GpyOpt==1.2.5
     - pyDOE==0.3.8
     - hyperopt==0.1
+    - boto3
 
