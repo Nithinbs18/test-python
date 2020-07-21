@@ -1,4 +1,4 @@
-sklearn==0.19.1
+mlflow==1.8.0
 pandas==0.25.3
 numpy==1.18.2
-mlflow==1.8.0
+scikit_learn==0.23.1
