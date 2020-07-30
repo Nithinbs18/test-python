@@ -29,13 +29,10 @@ def eval_metrics(actual, pred):
 
 
 if __name__ == "__main__":
-    #mlflow.set_tracking_uri("https://dev.digitalcitadel.tech")
     warnings.filterwarnings("ignore")
     np.random.seed(40)
+    data = pd.read_csv('winequality-red.csv', sep=';')
 
-    # Read the wine-quality csv file from the URL
-    data = pd.read_csv('wine-quality.csv', sep=';')
-    
     # Split the data into training and test sets. (0.75, 0.25) split.
     train, test = train_test_split(data)
 
@@ -53,14 +50,18 @@ if __name__ == "__main__":
         lr.fit(train_x, train_y)
 
         predicted_qualities = lr.predict(test_x)
+
         (rmse, mae, r2) = eval_metrics(test_y, predicted_qualities)
+
         print("Elasticnet model (alpha=%f, l1_ratio=%f):" % (alpha, l1_ratio))
         print("  RMSE: %s" % rmse)
         print("  MAE: %s" % mae)
         print("  R2: %s" % r2)
+
         mlflow.log_param("alpha", alpha)
         mlflow.log_param("l1_ratio", l1_ratio)
         mlflow.log_metric("rmse", rmse)
         mlflow.log_metric("r2", r2)
         mlflow.log_metric("mae", mae)
+
         mlflow.sklearn.log_model(lr, "model")

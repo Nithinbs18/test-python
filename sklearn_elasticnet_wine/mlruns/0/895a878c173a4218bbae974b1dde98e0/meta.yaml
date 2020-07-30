@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/DENIBHA/Desktop/test-python/sklearn_elasticnet_wine/mlruns/0/895a878c173a4218bbae974b1dde98e0/artifacts
+end_time: 1596103362856
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+name: ''
+run_id: 895a878c173a4218bbae974b1dde98e0
+run_uuid: 895a878c173a4218bbae974b1dde98e0
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1596103362819
+status: 4
+tags: []
+user_id: DENIBHA
