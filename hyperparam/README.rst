@@ -29,37 +29,18 @@ examples/hyperparam/MLproject has 4 targets:
 Running this Example
 ^^^^^^^^^^^^^^^^^^^^
 
-You can run any of the targets as a standard MLflow run.
 
 .. code-block:: bash
 
-    mlflow experiments create -n individual_runs
-
-Creates experiment for individual runs and return its experiment ID.
+    mlflow run -e random .
 
 .. code-block:: bash
 
-    mlflow experiments create -n hyper_param_runs
-
-Creates an experiment for hyperparam runs and return its experiment ID.
+    mlflow run -e gpyopt .
 
 .. code-block:: bash
 
-    mlflow run -e train --experiment-id <individual_runs_experiment_id> examples/hyperparam
-
-Runs the Keras deep learning training with default parameters and log it in experiment 1.
-
-.. code-block:: bash
-
-    mlflow run -e random --experiment-id <hyperparam_experiment_id>  -P examples/hyperparam
-
-.. code-block:: bash
-
-    mlflow run -e gpyopt --experiment-id <hyperparam_experiment_id>  -P examples/hyperparam
-
-.. code-block:: bash
-
-    mlflow run -e hyperopt --experiment-id <hyperparam_experiment_id> -P examples/hyperparam
+    mlflow run -e hyperopt .
 
 Runs the hyperparameter tuning with either random search or GpyOpt or Hyperopt and log the
 results under ``hyperparam_experiment_id``.
