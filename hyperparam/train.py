@@ -128,7 +128,6 @@ def run(training_data, epochs, batch_size, learning_rate, momentum, seed):
     test_y = test[["quality"]].as_matrix().astype("float32")
 
     with mlflow.start_run():
-        mlflow.keras.autolog()
         if epochs == 0:  # score null model
             eval_and_log_metrics(
                 "train", train_y, np.ones(len(train_y)) * np.mean(train_y), epoch=-1

@@ -93,6 +93,14 @@ def run(
             """
             lr, momentum = params[0]
             with mlflow.start_run(nested=True) as child_run:
+                params = {
+                    "training_data": training_data,
+                    "epochs": str(nepochs),
+                    "learning_rate": str(lr),
+                    "momentum": str(momentum),
+                    "seed": str(seed),
+                }
+                mlflow.log_params(params)
                 p = mlflow.projects.run(
                     run_id=child_run.info.run_id,
                     uri=".",
@@ -113,9 +121,12 @@ def run(
                 metrics = training_run.data.metrics
 
                 # cap the loss at the loss of the null model
-                train_loss = min(null_valid_loss, metrics["train_{}".format(metric)])
-                valid_loss = min(null_valid_loss, metrics["val_{}".format(metric)])
-                test_loss = min(null_test_loss, metrics["test_{}".format(metric)])
+                train_loss = min(
+                    null_valid_loss, metrics["train_{}".format(metric)])
+                valid_loss = min(
+                    null_valid_loss, metrics["val_{}".format(metric)])
+                test_loss = min(
+                    null_test_loss, metrics["test_{}".format(metric)])
             else:
                 # run failed => return null loss
                 tracking_client.set_terminated(p.run_id, "FAILED")
@@ -149,9 +160,11 @@ def run(
             0, experiment_id, _inf, _inf, _inf, True
         )(params=[[0, 0]])
         myProblem = GPyOpt.methods.BayesianOptimization(
-            new_eval(epochs, experiment_id, train_null_loss, valid_null_loss, test_null_loss),
+            new_eval(epochs, experiment_id, train_null_loss,
+                     valid_null_loss, test_null_loss),
             bounds,
-            evaluator_type="local_penalization" if min(batch_size, max_p) > 1 else "sequential",
+            evaluator_type="local_penalization" if min(
+                batch_size, max_p) > 1 else "sequential",
             batch_size=batch_size,
             num_cores=max_p,
             model_type=gpy_model,
@@ -176,7 +189,8 @@ def run(
         # find the best run, log its metrics as the final metrics of this run.
         client = MlflowClient()
         runs = client.search_runs(
-            [experiment_id], "tags.mlflow.parentRunId = '{run_id}' ".format(run_id=run.info.run_id)
+            [experiment_id], "tags.mlflow.parentRunId = '{run_id}' ".format(
+                run_id=run.info.run_id)
         )
         best_val_train = _inf
         best_val_valid = _inf

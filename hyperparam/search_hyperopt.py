@@ -69,6 +69,14 @@ def train(training_data, max_runs, epochs, metric, algo, seed):
 
             lr, momentum = params
             with mlflow.start_run(nested=True) as child_run:
+                params = {
+                    "training_data": training_data,
+                    "epochs": str(nepochs),
+                    "learning_rate": str(lr),
+                    "momentum": str(momentum),
+                    "seed": str(seed),
+                }
+                mlflow.log_params(params)
                 p = mlflow.projects.run(
                     uri=".",
                     entry_point="train",
@@ -89,9 +97,12 @@ def train(training_data, max_runs, epochs, metric, algo, seed):
                 training_run = tracking_client.get_run(p.run_id)
                 metrics = training_run.data.metrics
                 # cap the loss at the loss of the null model
-                train_loss = min(null_train_loss, metrics["train_{}".format(metric)])
-                valid_loss = min(null_valid_loss, metrics["val_{}".format(metric)])
-                test_loss = min(null_test_loss, metrics["test_{}".format(metric)])
+                train_loss = min(
+                    null_train_loss, metrics["train_{}".format(metric)])
+                valid_loss = min(
+                    null_valid_loss, metrics["val_{}".format(metric)])
+                test_loss = min(
+                    null_test_loss, metrics["test_{}".format(metric)])
             else:
                 # run failed => return null loss
                 tracking_client.set_terminated(p.run_id, "FAILED")
@@ -126,7 +137,8 @@ def train(training_data, max_runs, epochs, metric, algo, seed):
             0, experiment_id, _inf, _inf, _inf, True
         )(params=[0, 0])
         best = fmin(
-            fn=new_eval(epochs, experiment_id, train_null_loss, valid_null_loss, test_null_loss),
+            fn=new_eval(epochs, experiment_id, train_null_loss,
+                        valid_null_loss, test_null_loss),
             space=space,
             algo=tpe.suggest if algo == "tpe.suggest" else rand.suggest,
             max_evals=max_runs,
@@ -135,7 +147,8 @@ def train(training_data, max_runs, epochs, metric, algo, seed):
         # find the best run, log its metrics as the final metrics of this run.
         client = MlflowClient()
         runs = client.search_runs(
-            [experiment_id], "tags.mlflow.parentRunId = '{run_id}' ".format(run_id=run.info.run_id)
+            [experiment_id], "tags.mlflow.parentRunId = '{run_id}' ".format(
+                run_id=run.info.run_id)
         )
         best_val_train = _inf
         best_val_valid = _inf
