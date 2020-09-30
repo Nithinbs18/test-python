@@ -72,7 +72,7 @@ class MLflowCheckpoint(Callback):
             raise Exception("Failed to build any model")
         mlflow.log_metric(self.train_loss, self._best_train_loss, step=self._next_step)
         mlflow.log_metric(self.val_loss, self._best_val_loss, step=self._next_step)
-        mlflow.keras.log_model(self._best_model, "model")
+        #mlflow.keras.log_model(self._best_model, "model")
 
     def on_epoch_end(self, epoch, logs=None):
         """
